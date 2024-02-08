@@ -9,7 +9,7 @@ exclude = ["examples/"]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
-numpy = ">=1.25.0,<=1.26.1"
+numpy = "^1.26.4"
 
 [build-system]
 requires = ["poetry-core"]
