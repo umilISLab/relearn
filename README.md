@@ -73,6 +73,10 @@ After installation, you can verify that the project is installed correctly by ru
 python -c "import relearn; print(relearn.__version__)"
 ```
 
+### Usage Example
+
+You can find a _Recycling Robot_ example [here](https://github.com/umilISLab/relearn/tree/main/examples).
+
 ## Built With
 
 * [poetry](https://maven.apache.org/) - Dependency Management
