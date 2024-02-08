@@ -5,6 +5,7 @@ description = "A package for reinforcement learning (RL) development, featuring 
 authors = ["eliroc98 <elisabetta.rocchetti0@gmail.com>"]
 license = "GPL-3.0-only"
 readme = "README.md"
+exclude = ["examples/"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
