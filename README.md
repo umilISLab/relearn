@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-**Python**: This project requires a Python version >=3.10 and <3.13. You can download it from [python.org](https://www.python.org/downloads/).
+**Python**: This project requires a Python version >=3.9 and <3.13. You can download it from [python.org](https://www.python.org/downloads/).
 
 This project can be installed using pip directly from PyPI or by cloning the repository from GitHub. Follow the instructions below based on your preferred method.
 

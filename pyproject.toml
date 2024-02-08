@@ -8,9 +8,8 @@ readme = "README.md"
 exclude = ["examples/"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
-numpy = "^1.26.1"
-scipy = "^1.11.3"
+python = ">=3.9,<3.13"
+numpy = ">=1.25.0,<=1.26.1"
 
 [build-system]
 requires = ["poetry-core"]
