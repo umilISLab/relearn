@@ -22,4 +22,4 @@ import relearn.environment
 import relearn.mdp
 
 __all__ = ["environment", "agent", "mdp"]
-__version__ = "0.1.1"
+__version__ = "0.1.2"

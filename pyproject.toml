@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "relearn"
-version = "0.1.1"
+version = "0.1.2"
 description = "A package for reinforcement learning (RL) development, featuring classes for Markov Decision Processes (MDPs), agents, and environments. Ideal for creating custom RL environments and experimenting with algorithms. Suitable for researchers, educators, and developers seeking to explore or implement RL applications."
 authors = ["eliroc98 <elisabetta.rocchetti0@gmail.com>"]
 license = "GPL-3.0-only"
