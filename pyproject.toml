@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "relearn"
+version = "0.1.0"
+description = "Introducing a dynamic package designed specifically for the development and implementation of reinforcement learning (RL) projects. This toolkit includes essential classes for modeling Markov Decision Processes (MDPs), agents, and environments, laying the foundation for RL systems. With our package, users have the flexibility to create custom environments, allowing for the exploration and testing of various RL algorithms. Whether you're a researcher, educator, or developer, this package provides the necessary tools to implement reinforcement learning applications."
+authors = ["eliroc98 <elisabetta.rocchetti0@gmail.com>"]
+license = "GPL-3.0-only"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+numpy = "^1.26.1"
+scipy = "^1.11.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
