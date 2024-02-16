@@ -97,3 +97,20 @@ class MDP:
             self.time += 1
         except ValueError:
             print("End state was met.")
+
+    def reset(self):
+        """Resets the MDP to its initial state.
+
+        This method reinitializes the MDP, setting the time back to zero,
+        restoring the current state to the initial state, and clearing the trajectory.
+        It prepares the MDP for a new simulation or iteration from the beginning,
+        allowing for repeated experiments or simulations without the need to
+        create a new MDP instance.
+        """
+        self.time = 0
+        self.current_state = self.environment.initial_state
+        self.trajectory = {
+            "rewards": [self.environment.initial_reward],
+            "states": [self.environment.initial_state],
+            "actions": [],
+        }
