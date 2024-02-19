@@ -8,7 +8,7 @@ to analyze the performance and dynamics of RL strategies.
 
 from itertools import zip_longest
 from relearn.environment import Environment, State, Action
-from relearn.agent import Agent
+from relearn.policy import Policy
 
 
 class MDP:
@@ -30,8 +30,8 @@ class MDP:
             dimensions do not match.
     """
 
-    def __init__(self, agent: Agent, environment: Environment):
-        if agent.policy.state_action_probas.shape != (
+    def __init__(self, policy: Policy, environment: Environment):
+        if policy.shape != (
             len(environment.states),
             len(environment.actions),
         ):
@@ -40,7 +40,7 @@ class MDP:
                                  num_states x num_actions, with states and
                                  actions defined in MDP"""
             )
-        self.agent = agent
+        self.policy = policy
         self.environment = environment
         self.time = 0
         self.current_state = self.environment.initial_state
@@ -86,7 +86,7 @@ class MDP:
                     starting_state, starting_action
                 )
             else:
-                selected_action = self.agent.make_choice(self.current_state)
+                selected_action = self.policy.select_action(self.current_state)
                 self.trajectory["actions"].append(selected_action)
                 next_state, reward = self.environment.behave(
                     self.current_state, selected_action

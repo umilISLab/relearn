@@ -8,6 +8,7 @@ on specified transitions, allowing for the simulation and analysis of RL algorit
 """
 
 import numpy as np
+from relearn.utils import ProbabilityArray
 
 
 class Action:
@@ -109,7 +110,7 @@ def initialise_dynamics_from_quadruples(
     states: list[State],
     actions: list[Action],
     rewards: list[Reward],
-):
+) -> ProbabilityArray:
     """Composes the dynamics array starting from the definition of the single
     transitions.
 
@@ -121,7 +122,7 @@ def initialise_dynamics_from_quadruples(
         ValueError: if cumulative probability of each transition exceeds 1
 
     Returns:
-        np.array: environment's dynamics, where value = 0 in non-feasible
+        ProbabilityArray: environment's dynamics, where value = 0 in non-feasible
         transitions
     """
     dynamics = np.zeros((len(states), len(actions), len(states), len(rewards)))
@@ -141,10 +142,8 @@ def initialise_dynamics_from_quadruples(
         dynamics[start_state_idx, action_idx, end_state_idx, reward_idx] = (
             transition.probability
         )
-    if (np.sum(dynamics, axis=(2, 3)) > 1).any():
-        raise ValueError("Transition probabilities must sum to 1")
 
-    return dynamics
+    return ProbabilityArray(dynamics)
 
 
 class Environment:
@@ -159,7 +158,7 @@ class Environment:
         states (list[State]): A list of the states in the environment.
         actions (list[Action]): A list of the actions possible in the environment.
         rewards (list[Reward]): A list of rewards that can be obtained in the environment.
-        dynamics (np.array): A 4D array representing the transition probabilities
+        dynamics (ProbabilityArray): A 4D array representing the transition probabilities
             between states given actions, and the associated rewards.
         initial_state (State): The starting state of the environment for the agent.
         initial_reward (Reward, optional): An initial reward, typically set to zero,
@@ -184,11 +183,11 @@ class Environment:
         rewards: list[Reward],
         transitions: list[Transition],
     ):
-        if len(states) != len(set([state.name for state in states])):
+        if len(states) != len(set(state.name for state in states)):
             raise ValueError("States names must be unique")
-        if len(actions) != len(set([action.name for action in actions])):
+        if len(actions) != len(set(action.name for action in actions)):
             raise ValueError("Actions names must be unique")
-        if len(rewards) != len(set([reward.value for reward in rewards])):
+        if len(rewards) != len(set(reward.value for reward in rewards)):
             raise ValueError("Rewards values must be unique")
 
         # enumerating actions, rewards and states
@@ -228,7 +227,7 @@ class Environment:
     def state_reward_proba(
         self, next_state: State, reward: Reward, state: State, action: Action
     ) -> float:
-        """returns the probability of having a state and a reward given the
+        """Returns the probability of having a state and a reward given the
         current state and the chosen action
 
         Args:
@@ -249,7 +248,7 @@ class Environment:
     def state_transition_proba(
         self, next_state: State, state: State, action: Action
     ) -> float:
-        """computes transition probabilities
+        """Computes transition probabilities
 
         Args:
             next_state (State): state s', next state of interest for the
@@ -264,7 +263,7 @@ class Environment:
         return np.sum(self.dynamics[state.idx, action.idx, next_state.idx, :])
 
     def state_action_function(self, state: State, action: Action) -> float:
-        """returns expected rewards given a state-action pair
+        """Returns expected rewards given a state-action pair
 
         Args:
             state (State): state s, current state
@@ -281,7 +280,7 @@ class Environment:
     def state_action_state_function(
         self, state: State, action: Action, next_state: State
     ) -> float:
-        """returns expected rewards given a state-action-nextstate triple
+        """Returns expected rewards given a state-action-nextstate triple
 
         Args:
             state (State): state s, current state
@@ -299,8 +298,8 @@ class Environment:
             for reward in self.rewards
         )
 
-    def behave(self, state: State, action: Action) -> (State, float):
-        """retrieve the feedback of the current environment given a current
+    def behave(self, state: State, action: Action) -> tuple[State, float]:
+        """Retrieve the feedback of the current environment given a current
         state and the chosen action
 
         Args:
@@ -319,5 +318,4 @@ class Environment:
             # pylint: disable-next=unbalanced-tuple-unpacking
             next_state_idx, next_reward_idx = np.unravel_index(i, probabilities.shape)
             return self.states[next_state_idx], self.rewards[next_reward_idx]
-        else:
-            raise ValueError("Selected action is not feasible in selected state")
+        raise ValueError("Selected action is not feasible in selected state")

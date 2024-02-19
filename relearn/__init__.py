@@ -17,9 +17,10 @@ Designed for educational purposes, research, and practical application, relearn
 aims to facilitate the exploration of reinforcement learning theories and practices.
 """
 
-import relearn.agent
+import relearn.utils
 import relearn.environment
+import relearn.policy
 import relearn.mdp
 
-__all__ = ["environment", "agent", "mdp"]
+__all__ = ["utils", "environment", "policy", "mdp"]
 __version__ = "0.1.2"
