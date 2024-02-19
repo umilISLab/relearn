@@ -299,7 +299,7 @@ class Environment:
             for reward in self.rewards
         )
 
-    def behave(self, state: State, action: Action) -> (State, float):
+    def behave(self, state: State, action: Action) -> tupl[State, float]:
         """retrieve the feedback of the current environment given a current
         state and the chosen action
 
