@@ -47,7 +47,11 @@ class Policy(ProbabilityArray):
         Generates a random policy array.
     """
 
-    def __new__(cls, input_array: any, actions: List[Action]):
+    # TODO capire come chiamare super e se devo chiamare super
+    def __new__(
+        cls, input_array, actions: List[Action], allow_zero_vectors: bool = False
+    ):
+        super().__new__(input_array, allow_zero_vectors)
         obj = np.asarray(input_array).view(cls)
         if len(actions) != obj.shape[-1]:
             raise ValueError("Length of actions must be equal to last array dimension.")
@@ -55,6 +59,7 @@ class Policy(ProbabilityArray):
         return obj
 
     def __array_finalize__(self, obj):
+        super().__array_finalize__(obj)
         if obj is None:
             return
         # pylint: disable=W0201

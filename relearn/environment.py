@@ -143,7 +143,7 @@ def initialise_dynamics_from_quadruples(
             transition.probability
         )
 
-    return ProbabilityArray(dynamics)
+    return ProbabilityArray(dynamics, allow_zero_vectors=True)
 
 
 class Environment:
@@ -309,6 +309,9 @@ class Environment:
         Returns:
             State: next state
             float: reward
+
+        Raises:
+            ValueError: If selected action is not feasible in the selected state.
         """
         probabilities = self.dynamics[state.idx, action.idx, :, :]
         # blocking non feasible actions

@@ -46,7 +46,7 @@ class ProbabilityArray(np.ndarray):
         probability distribution.
     """
 
-    def __new__(cls, input_array):
+    def __new__(cls, input_array, allow_zero_vectors: bool = False):
         """Creates a new ProbabilityArray instance, ensuring it represents a valid
         probability distribution.
 
@@ -64,11 +64,17 @@ class ProbabilityArray(np.ndarray):
             raise ValueError(
                 "Probabilities are either negative or their sum is not close to one"
             )
+        # having all zero vectors is useful in relearn, for instanceto represent
+        # when an action is not feasible in a state
+        # FIXME non funziona, perchè? poi mi sono persa nella policy...
+        obj.allow_zero_vectors = allow_zero_vectors
         return obj
 
     def __array_finalize__(self, obj):
         if obj is None:
             return
+        # pylint: disable=W0201
+        self.allow_zero_vectors = getattr(obj, "allow_zero_vectors", False)
 
     def __setitem__(self, key, value):
         """Overrides item assignment to ensure modifications maintain probability
@@ -103,7 +109,9 @@ class ProbabilityArray(np.ndarray):
         """
         if len(self.shape) == 1:
             non_negative = np.all(self >= 0)
-            max_sum_to_one = np.sum(self) <= 1
+            max_sum_to_one = np.isclose(np.sum(self), 1)
+            if self.allow_zero_vectors:
+                max_sum_to_one = max_sum_to_one or np.sum(self) == 0
             return non_negative and max_sum_to_one
         # pylint: disable=W0212
         return all(sub_arr._is_probability_distribution() for sub_arr in self)
